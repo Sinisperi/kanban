@@ -8,7 +8,6 @@ const InitState = {
 };
 
 const RootReducer = (state = InitState, action) => {
-  console.log(state, "rootred");
   switch (action.type) {
     case "ADD": {
       const newColumn = state[action.payload.destination];

@@ -3,18 +3,27 @@ import { RootContext } from "./context";
 import { v4 as uuidv4 } from "uuid";
 
 const Item = ({ data, origin, setNewIndex }) => {
+  const [isSomeoneInsideMe, setIsSomeoneInsideMe] = React.useState(false);
   const handleDragStart = (e) => {
     e.dataTransfer.setData("id", data.id);
     e.dataTransfer.setData("origin", origin);
     e.stopPropagation();
   };
   const handleDragEnter = (e) => {
-    setNewIndex(data.id);
+    setIsSomeoneInsideMe(() => true);
+    console.log("entered the", data.text);
+  };
+
+  const handleDragLeave = () => {
+    setIsSomeoneInsideMe(() => false);
+    console.log("left the", data.text);
   };
   return (
     <h3
+      style={{ color: isSomeoneInsideMe ? "red" : "black" }}
       draggable
       onDragEnter={(e) => handleDragEnter(e)}
+      onDragLeave={handleDragLeave}
       onDragStartCapture={(e) => handleDragStart(e)}
     >
       {data.text}
@@ -80,7 +89,6 @@ export const App = () => {
       <button onClick={handleAdd}>Add</button>
       <div
         onDragOver={(e) => e.preventDefault()}
-        onDragEnter={() => console.log("asdf")}
         onDrop={(e) => handleDropLeft(e)}
         className="column"
       >
@@ -93,7 +101,6 @@ export const App = () => {
       </div>
       <div
         onDragOver={(e) => e.preventDefault()}
-        onDragEnter={() => console.log("asdf")}
         onDrop={(e) => handleDropRight(e)}
         className="column"
       >
