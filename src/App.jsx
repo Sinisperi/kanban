@@ -1,14 +1,15 @@
 import React from "react";
 import { RootContext } from "./context";
+import { v4 as uuidv4 } from "uuid";
 
-const Item = ({ data, origin }) => {
+const Item = ({ data, origin, setNewIndex }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.setData("id", data.id);
     e.dataTransfer.setData("origin", origin);
     e.stopPropagation();
   };
   const handleDragEnter = (e) => {
-    console.log(data.id);
+    setNewIndex(data.id);
   };
   return (
     <h3
@@ -21,33 +22,92 @@ const Item = ({ data, origin }) => {
   );
 };
 
+// const Column = ({ name, items }) => {
+//   <div
+//     onDragOver={(e) => e.preventDefault()}
+//     onDragEnter={() => console.log("asdf")}
+//     onDrop={(e) => handleDrop(e)}
+//     className="column"
+//   >
+//     <h1>{name}</h1>
+//     {state.left.map((i) => {
+//       return (
+//         <Item key={i.id} data={i} origin="left" setNewIndex={setNewPlace} />
+//       );
+//     })}
+//   </div>;
+// };
+
+// Column passes a index grabbing function to an Item (handleDragEnter) and sorts it after drop using that index
+// Columns are stored in state inside of an array to ease the addition of new columns (?)
 export const App = () => {
   const { state, dispatch } = React.useContext(RootContext);
+  const [input, setInput] = React.useState("");
+  const [newPlace, setNewPlace] = React.useState();
   React.useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  const handleDrop = (e) => {
+    console.log(input);
+  }, [input]);
+  // Abstact columns to prevent hardcoding functions on drop for each column
+  const handleDropLeft = (e) => {
     const id = e.dataTransfer.getData("id");
     const origin = e.dataTransfer.getData("origin");
-    const last = e.dataTransfer.getData("lastDraggedOver");
-    console.log(id, origin, last);
+    dispatch({ type: "DROP", payload: { origin, destination: "left", id } });
+  };
+  const handleDropRight = (e) => {
+    const id = e.dataTransfer.getData("id");
+    const origin = e.dataTransfer.getData("origin");
+    dispatch({ type: "DROP", payload: { origin, destination: "right", id } });
+  };
+  const handleAdd = () => {
+    dispatch({
+      type: "ADD",
+      payload: { destination: "left", data: { text: input, id: uuidv4() } },
+    });
+    setInput(() => "");
+  };
+  const handleChange = (e) => {
+    setInput(() => e.target.value);
   };
 
   return (
     <div className="container">
+      <input
+        value={input}
+        onChange={handleChange}
+        type="text"
+        placeholder="item text"
+      />
+      <button onClick={handleAdd}>Add</button>
       <div
         onDragOver={(e) => e.preventDefault()}
         onDragEnter={() => console.log("asdf")}
-        onDrop={(e) => handleDrop(e)}
+        onDrop={(e) => handleDropLeft(e)}
         className="column"
       >
-        <h1>Pick</h1>
-        <Item data={{ text: "ShiteF", id: 13 }} origin="Pasdf" />
-        <Item data={{ text: "Apples", id: 11 }} origin="Pasdf" />
+        <h1>LEft</h1>
+        {state.left.map((i) => {
+          return (
+            <Item key={i.id} data={i} origin="left" setNewIndex={setNewPlace} />
+          );
+        })}
       </div>
-      <div className="column">
-        <h1>Drop</h1>
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDragEnter={() => console.log("asdf")}
+        onDrop={(e) => handleDropRight(e)}
+        className="column"
+      >
+        <h1>Right</h1>
+        {state.right.map((i) => {
+          return (
+            <Item
+              key={i.id}
+              data={i}
+              origin="right"
+              setNewIndex={setNewPlace}
+            />
+          );
+        })}
       </div>
     </div>
   );
