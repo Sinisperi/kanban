@@ -2,29 +2,40 @@ import React from "react";
 import { RootContext } from "./context";
 import { v4 as uuidv4 } from "uuid";
 
+// TODO: Every item has to know its current position in the list by storing and its current index
 const Item = ({ data, origin, setNewIndex }) => {
   const [isSomeoneInsideMe, setIsSomeoneInsideMe] = React.useState(false);
   const handleDragStart = (e) => {
     e.dataTransfer.setData("id", data.id);
     e.dataTransfer.setData("origin", origin);
+    e.dataTransfer.setData("text", data.text);
     e.stopPropagation();
+  };
+
+  const handleDragEnd = () => {
+    // setIsSomeoneInsideMe(() => false);
   };
   const handleDragEnter = (e) => {
     setIsSomeoneInsideMe(() => true);
-    console.log("entered the", data.text);
+    console.log("someone entered the", data.text);
+    setNewIndex(data.id);
   };
-
+  const handleDrop = () => {
+    setIsSomeoneInsideMe(() => false);
+  };
   const handleDragLeave = () => {
     setIsSomeoneInsideMe(() => false);
     console.log("left the", data.text);
   };
   return (
     <h3
-      style={{ color: isSomeoneInsideMe ? "red" : "black" }}
+      style={{ borderTop: isSomeoneInsideMe ? "1px solid red" : "none" }}
       draggable
-      onDragEnter={(e) => handleDragEnter(e)}
+      onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
-      onDragStartCapture={(e) => handleDragStart(e)}
+      onDragStartCapture={handleDragStart}
+      onDragEndCapture={handleDragEnd}
+      onDrop={handleDrop}
     >
       {data.text}
     </h3>
@@ -60,7 +71,12 @@ export const App = () => {
   const handleDropLeft = (e) => {
     const id = e.dataTransfer.getData("id");
     const origin = e.dataTransfer.getData("origin");
-    dispatch({ type: "DROP", payload: { origin, destination: "left", id } });
+    const text = e.dataTransfer.getData("text");
+    console.log("dropped", text, "after", newPlace);
+    dispatch({
+      type: "DROP",
+      payload: { origin, destination: "left", id, placeAfter: newPlace },
+    });
   };
   const handleDropRight = (e) => {
     const id = e.dataTransfer.getData("id");

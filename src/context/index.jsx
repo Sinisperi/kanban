@@ -2,9 +2,23 @@ import React from "react";
 
 export const RootContext = React.createContext();
 
+class LinkedList {
+  head = null;
+  length = 0;
+}
+
 const InitState = {
   left: [],
   right: [],
+};
+
+const indOf = (id, arr) => {
+  let ind = 0;
+  for (let i of arr) {
+    if (i.id === id) return ind;
+    ind++;
+  }
+  return undefined;
 };
 
 const RootReducer = (state = InitState, action) => {
@@ -18,15 +32,32 @@ const RootReducer = (state = InitState, action) => {
       };
     }
     case "DROP": {
+      const itemToMove = state[action.payload.origin].filter(
+        (i) => i.id === action.payload.id
+      )[0];
       if (
         state[action.payload.destination].filter(
           (i) => i.id === action.payload.id
         )[0]
-      )
-        return state;
-      const itemToMove = state[action.payload.origin].filter(
-        (i) => i.id === action.payload.id
-      )[0];
+      ) {
+        const arr = state[action.payload.destination];
+        // let ind = 0;
+        let arrWithout;
+        let arrWith;
+        // for (let i of arr) {
+        //   if (i.id === action.payload.placeAfter) {
+        //     arrWithout = arr.toSpliced(ind, 1);
+        //     return { ...state, [action.payload.destination]: arrWithout };
+        //   }
+        //   ind++;
+        // }
+        const moveId = indOf(itemToMove.id, arr);
+        const moveAfterId = indOf(action.payload.placeAfter, arr);
+        arrWithout = arr.toSpliced(moveId, 1);
+        arrWith = arrWithout.toSpliced(moveAfterId, 0, itemToMove);
+        console.log(arrWith);
+        return { ...state, [action.payload.destination]: arrWith };
+      }
       const fromArray = state[action.payload.origin].filter(
         (i) => i.id !== action.payload.id
       );
