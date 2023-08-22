@@ -81,7 +81,10 @@ export const App = () => {
   const handleDropRight = (e) => {
     const id = e.dataTransfer.getData("id");
     const origin = e.dataTransfer.getData("origin");
-    dispatch({ type: "DROP", payload: { origin, destination: "right", id } });
+    dispatch({
+      type: "DROP",
+      payload: { origin, destination: "right", id, placeAfter: newPlace },
+    });
   };
   const handleAdd = () => {
     dispatch({

@@ -41,16 +41,9 @@ const RootReducer = (state = InitState, action) => {
         )[0]
       ) {
         const arr = state[action.payload.destination];
-        // let ind = 0;
         let arrWithout;
         let arrWith;
-        // for (let i of arr) {
-        //   if (i.id === action.payload.placeAfter) {
-        //     arrWithout = arr.toSpliced(ind, 1);
-        //     return { ...state, [action.payload.destination]: arrWithout };
-        //   }
-        //   ind++;
-        // }
+
         const moveId = indOf(itemToMove.id, arr);
         const moveAfterId = indOf(action.payload.placeAfter, arr);
         arrWithout = arr.toSpliced(moveId, 1);
@@ -62,12 +55,24 @@ const RootReducer = (state = InitState, action) => {
         (i) => i.id !== action.payload.id
       );
       const toArray = state[action.payload.destination];
-      toArray.push(itemToMove);
+
+      const moveAfterId = indOf(action.payload.placeAfter, toArray);
+      if (!moveAfterId) {
+        toArray.push(itemToMove);
+        return {
+          ...state,
+          [action.payload.origin]: fromArray,
+          [action.payload.destination]: toArray,
+        };
+      }
+
+      const newArr = toArray.toSpliced(moveAfterId, 0, itemToMove);
+
       console.log(toArray, fromArray);
       return {
         ...state,
         [action.payload.origin]: fromArray,
-        [action.payload.destination]: toArray,
+        [action.payload.destination]: newArr,
       };
     }
     default: {
