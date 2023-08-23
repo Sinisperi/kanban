@@ -23,6 +23,9 @@ const indOf = (id, arr) => {
 
 const RootReducer = (state = InitState, action) => {
   switch (action.type) {
+    case "NEW_COL": {
+      return { ...state, [action.payload.name]: [] };
+    }
     case "ADD": {
       const newColumn = state[action.payload.destination];
       newColumn.push(action.payload.data);
@@ -57,7 +60,7 @@ const RootReducer = (state = InitState, action) => {
       const toArray = state[action.payload.destination];
 
       const moveAfterId = indOf(action.payload.placeAfter, toArray);
-      if (!moveAfterId) {
+      if (moveAfterId === undefined) {
         toArray.push(itemToMove);
         return {
           ...state,
@@ -67,7 +70,7 @@ const RootReducer = (state = InitState, action) => {
       }
 
       const newArr = toArray.toSpliced(moveAfterId, 0, itemToMove);
-
+      console.log(moveAfterId, toArray.length);
       console.log(toArray, fromArray);
       return {
         ...state,
@@ -84,7 +87,6 @@ const RootReducer = (state = InitState, action) => {
 export const RootContextProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(RootReducer, InitState, () => {
     const store = localStorage.getItem("store");
-    console.log(store);
     if (store) {
       return JSON.parse(store);
     } else return InitState;
