@@ -2,15 +2,7 @@ import React from "react";
 
 export const RootContext = React.createContext();
 
-class LinkedList {
-  head = null;
-  length = 0;
-}
-
-const InitState = {
-  left: [],
-  right: [],
-};
+const InitState = {};
 
 const indOf = (id, arr) => {
   let ind = 0;
@@ -24,10 +16,14 @@ const indOf = (id, arr) => {
 const RootReducer = (state = InitState, action) => {
   switch (action.type) {
     case "NEW_COL": {
+      if (Object.keys(state).indexOf(action.payload.name) >= 0) {
+        return state;
+      }
       return { ...state, [action.payload.name]: [] };
     }
     case "ADD": {
       const newColumn = state[action.payload.destination];
+      if (!newColumn) return state;
       newColumn.push(action.payload.data);
       return {
         ...state,

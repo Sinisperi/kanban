@@ -65,9 +65,6 @@ const Column = ({ name, placeAfter, setPlaceAfter }) => {
   );
 };
 
-// Column passes a index grabbing function to an Item (handleDragEnter) and sorts it after drop using that index
-
-// Columns are stored in state inside of an array to ease the addition of new columns (?)
 const InitInput = {
   item: "",
   column: "",
@@ -80,7 +77,7 @@ export const App = () => {
     dispatch({
       type: "ADD",
       payload: {
-        destination: Object.keys(state)[1],
+        destination: Object.keys(state)[0],
         data: { text: input.item, id: uuidv4() },
       },
     });
