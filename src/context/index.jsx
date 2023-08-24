@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Actions } from "./actions";
 export const RootContext = React.createContext();
 
 const InitState = {};
@@ -15,13 +15,13 @@ const indOf = (id, arr) => {
 
 const RootReducer = (state = InitState, action) => {
   switch (action.type) {
-    case "NEW_COL": {
+    case Actions.CREATE_COLUMN: {
       if (Object.keys(state).indexOf(action.payload.name) >= 0) {
         return state;
       }
       return { ...state, [action.payload.name]: [] };
     }
-    case "ADD": {
+    case Actions.CREATE_ITEM: {
       const newColumn = state[action.payload.destination];
       if (!newColumn) return state;
       newColumn.push(action.payload.data);
@@ -30,7 +30,7 @@ const RootReducer = (state = InitState, action) => {
         [action.payload.destination]: newColumn,
       };
     }
-    case "DROP": {
+    case Actions.DROP_ITEM: {
       const itemToMove = state[action.payload.origin].filter(
         (i) => i.id === action.payload.id
       )[0];
