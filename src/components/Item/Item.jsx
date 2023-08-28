@@ -1,4 +1,5 @@
 import React from "react";
+import "./item.css";
 export const Item = ({ data, origin, setPlaceAfter, handleRemove }) => {
   const [isSomeoneInsideMe, setIsSomeoneInsideMe] = React.useState(false);
   const [isBeingDragged, setBeingDragged] = React.useState(false);
@@ -22,12 +23,10 @@ export const Item = ({ data, origin, setPlaceAfter, handleRemove }) => {
   };
 
   return (
-    <h3
+    <div
       className="item"
       style={{
-        boxShadow: isSomeoneInsideMe
-          ? "0px -2px 0.7px -0.4px rgba(33,156,194,1)"
-          : "none",
+        boxShadow: isSomeoneInsideMe ? "0px -4px 0.7px -1px #ffc857" : "none",
       }}
       draggable
       onDragEnter={handleDragEnter}
@@ -35,8 +34,10 @@ export const Item = ({ data, origin, setPlaceAfter, handleRemove }) => {
       onDragStartCapture={handleDragStart}
       onDrop={handleDrop}
     >
-      <button onClick={() => handleRemove(data.id)}>remove</button>
-      {data.text}
-    </h3>
+      <h4>
+        <button onClick={() => handleRemove(data.id)}>remove</button>
+        {data.text}
+      </h4>
+    </div>
   );
 };

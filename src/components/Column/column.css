@@ -1,0 +1,19 @@
+.column {
+  background-color: white;
+  min-width: 200px;
+  min-height: 400px;
+  padding: 20px;
+  box-shadow: 2px 4px 5px -4px rgba(0, 0, 0, 0.75);
+}
+
+.column_title {
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.item_list {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { RootContext } from "../../context";
 import { Item } from "../Item/Item";
 import { Actions } from "../../context/actions";
+import "./column.css";
 export const Column = ({ name, placeAfter, setPlaceAfter }) => {
   const { state, dispatch } = React.useContext(RootContext);
   const handleDrop = (e) => {
@@ -29,16 +30,18 @@ export const Column = ({ name, placeAfter, setPlaceAfter }) => {
       >
         delete
       </button>
-      <h1>{name}</h1>
-      {state[name].map((i) => (
-        <Item
-          key={i.id}
-          data={i}
-          origin={name}
-          setPlaceAfter={setPlaceAfter}
-          handleRemove={removeItem}
-        />
-      ))}
+      <h1 className="column_title">{name}</h1>
+      <div className="item_list">
+        {state[name].map((i) => (
+          <Item
+            key={i.id}
+            data={i}
+            origin={name}
+            setPlaceAfter={setPlaceAfter}
+            handleRemove={removeItem}
+          />
+        ))}
+      </div>
     </div>
   );
 };

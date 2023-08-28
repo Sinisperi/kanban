@@ -1,0 +1,8 @@
+.item {
+  background-color: #ededee;
+  padding: 0.5em;
+  border: 1px solid #2020204f;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  min-height: 5em;
+}

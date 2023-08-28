@@ -58,6 +58,7 @@ export const App = () => {
       <div className="column_list">
         {Object.keys(state).map((i) => (
           <Column
+            key={i}
             name={i}
             placeAfter={placeAfter}
             setPlaceAfter={setPlaceAfter}
