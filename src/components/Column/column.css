@@ -1,14 +1,18 @@
 .column {
   background-color: white;
-  min-width: 200px;
+  min-width: 15rem;
+  max-width: 15rem;
   min-height: 400px;
   padding: 20px;
   box-shadow: 2px 4px 5px -4px rgba(0, 0, 0, 0.75);
+  margin: 1rem 0.5rem 1rem 0.5rem;
 }
 
 .column_title {
   padding: 0.5rem;
   background-color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item_list {

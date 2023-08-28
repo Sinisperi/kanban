@@ -8,5 +8,6 @@
 
 .column_list {
   display: flex;
-  gap: 10%;
+  padding: 1rem;
+  width: 100%;
 }
