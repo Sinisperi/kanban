@@ -55,14 +55,15 @@ export const App = () => {
         placeholder="column name"
       />
       <button onClick={handleAddColumn}>Add</button>
-
-      {Object.keys(state).map((i) => (
-        <Column
-          name={i}
-          placeAfter={placeAfter}
-          setPlaceAfter={setPlaceAfter}
-        />
-      ))}
+      <div className="column_list">
+        {Object.keys(state).map((i) => (
+          <Column
+            name={i}
+            placeAfter={placeAfter}
+            setPlaceAfter={setPlaceAfter}
+          />
+        ))}
+      </div>
     </div>
   );
 };

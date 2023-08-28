@@ -4,25 +4,7 @@
   box-sizing: border-box;
 }
 
-.container {
+.column_list {
   display: flex;
-  background-color: aliceblue;
-  height: 100vh;
-  justify-content: space-evenly;
-}
-
-.column {
-  background-color: antiquewhite;
-  height: 100%;
-  width: 33%;
-}
-
-.column h1 {
-  text-align: center;
-}
-
-.item {
-  padding: 1em;
-  border: 1px solid black;
-  border-radius: 0.2em;
+  gap: 10%;
 }

@@ -1,4 +1,5 @@
 import { Actions } from "./actions";
+
 export const InitState = {};
 
 const indOf = (id, arr) => {
@@ -13,10 +14,24 @@ const indOf = (id, arr) => {
 export const RootReducer = (state = InitState, action) => {
   switch (action.type) {
     case Actions.CREATE_COLUMN: {
-      if (Object.keys(state).indexOf(action.payload.name) >= 0) {
+      const colList = Object.keys(state);
+      if (colList.indexOf(action.payload.name) >= 0) {
         return state;
       }
+
       return { ...state, [action.payload.name]: [] };
+    }
+    case Actions.REMOVE_COLUMN: {
+      const colList = Object.keys(state).filter(
+        (i) => i !== action.payload.name
+      );
+      const newState = {};
+      for (let i of colList) {
+        newState[i] = state[i];
+        console.log(i);
+      }
+
+      return newState;
     }
     case Actions.CREATE_ITEM: {
       const newColumn = state[action.payload.destination];
@@ -68,6 +83,13 @@ export const RootReducer = (state = InitState, action) => {
         [action.payload.origin]: fromArray,
         [action.payload.destination]: newArr,
       };
+    }
+
+    case Actions.REMOVE_ITEM: {
+      const arrayFrom = state[action.payload.column].filter(
+        (i) => i.id !== action.payload.id
+      );
+      return { ...state, [action.payload.column]: arrayFrom };
     }
     default: {
       return state;

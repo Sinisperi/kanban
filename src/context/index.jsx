@@ -1,7 +1,6 @@
 import React from "react";
 import { RootReducer, InitState } from "./reducer";
 export const RootContext = React.createContext();
-
 export const RootContextProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(RootReducer, InitState, () => {
     const store = localStorage.getItem("store");
